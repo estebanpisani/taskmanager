@@ -25,14 +25,14 @@ public class Task {
     private String title;
     @Column(name = "description",length = 255)
     private String description;
-    @Column(name = "due_date_time", nullable = false)
+    @Column(name = "due_date_time")
     private LocalDateTime dueDateTime;
     @Column(name = "creation_timestamp", nullable = false)
     @CreationTimestamp()
-    private LocalDateTime createdAt;
+    private LocalDateTime createdAt = LocalDateTime.now();
     @Column(name = "update_timestamp", nullable = false)
     @UpdateTimestamp()
-    private LocalDateTime updateAt;
+    private LocalDateTime updateAt = LocalDateTime.now();
     @Column(name = "priority", nullable = false)
     @Enumerated(EnumType.STRING)
     private PriorityEnum priority = PriorityEnum.LOW;
@@ -97,6 +97,22 @@ public class Task {
 
     public void setId(String id) {
         this.id = UUID.fromString(id);
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getUpdateAt() {
+        return updateAt;
+    }
+
+    public void setUpdateAt(LocalDateTime updateAt) {
+        this.updateAt = updateAt;
     }
 
     @Override

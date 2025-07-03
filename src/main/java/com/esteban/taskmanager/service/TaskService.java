@@ -19,5 +19,7 @@ public interface TaskService {
 
     void doneTask(String id);
 
+    void resetTask(String id);
+
     void deleteTask(String id);
 }
