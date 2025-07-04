@@ -31,9 +31,7 @@ public class TaskController {
     @GetMapping()
     public ResponseEntity<?> getAllTasks(){
         List<TaskResponse> tasks = this.taskService.getAllTasks();
-        return ResponseEntity
-                .ok()
-                .body(tasks);
+        return tasks.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok().body(tasks);
     }
 
     @GetMapping("/{id}")
