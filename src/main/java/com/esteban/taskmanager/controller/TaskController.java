@@ -4,6 +4,7 @@ import com.esteban.taskmanager.dto.TaskRequest;
 import com.esteban.taskmanager.dto.TaskResponse;
 import com.esteban.taskmanager.service.TaskService;
 import jakarta.validation.Valid;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -27,43 +29,59 @@ public class TaskController {
     }
 
     @GetMapping()
-    public List<TaskResponse> getAllTasks(){
-        return this.taskService.getAllTasks();
+    public ResponseEntity<?> getAllTasks(){
+        List<TaskResponse> tasks = this.taskService.getAllTasks();
+        return ResponseEntity
+                .ok()
+                .body(tasks);
     }
 
     @GetMapping("/{id}")
-    public TaskResponse getTaskById(@PathVariable String id){
-        return this.taskService.getTask(id);
+    public ResponseEntity<?> getTaskById(@PathVariable String id){
+        TaskResponse task = this.taskService.getTask(id);
+        return ResponseEntity
+                .ok()
+                .body(task);
     }
 
     @PostMapping()
-    public TaskResponse createTask(@RequestBody @Valid TaskRequest dto){
-        return this.taskService.createTask(dto);
+    public ResponseEntity<?> createTask(@RequestBody @Valid TaskRequest dto){
+        TaskResponse newTask = taskService.createTask(dto);
+        return ResponseEntity
+                .created(URI.create("/tasks/"+newTask.id()))
+                .body(newTask);
     }
 
     @PutMapping("/{id}")
-    public TaskResponse updateTask(@PathVariable String id, @RequestBody TaskRequest dto){
-        return this.taskService.updateTask(id, dto);
+    public ResponseEntity<?> updateTask(@PathVariable String id, @RequestBody TaskRequest dto){
+        TaskResponse updatedTask = this.taskService.updateTask(id, dto);
+        return ResponseEntity
+                .created(URI.create("/tasks/"+updatedTask.id()))
+                .body(updatedTask);
     }
 
     @PatchMapping("/{id}/start")
-    public void startTask(@PathVariable String id){
+    public ResponseEntity<?> startTask(@PathVariable String id){
         this.taskService.startTask(id);
+        return ResponseEntity.ok().build();
     }
 
     @PatchMapping("/{id}/done")
-    public void doneTask(@PathVariable String id){
+    public ResponseEntity<?> doneTask(@PathVariable String id){
         this.taskService.doneTask(id);
+        return ResponseEntity.ok().build();
     }
 
     @PatchMapping("/{id}/reset")
-    public void resetTask(@PathVariable String id){
+    public ResponseEntity<?> resetTask(@PathVariable String id){
         this.taskService.resetTask(id);
+        return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/{id}")
-    public void deleteTask(@PathVariable String id){
+    public ResponseEntity<?> deleteTask(@PathVariable String id){
         this.taskService.deleteTask(id);
+        return ResponseEntity.ok().build();
     }
 
 }
