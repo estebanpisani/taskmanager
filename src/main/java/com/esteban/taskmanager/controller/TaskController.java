@@ -2,8 +2,11 @@ package com.esteban.taskmanager.controller;
 
 import com.esteban.taskmanager.dto.TaskRequest;
 import com.esteban.taskmanager.dto.TaskResponse;
+import com.esteban.taskmanager.hateoas.TaskModelAssembler;
 import com.esteban.taskmanager.service.TaskService;
 import jakarta.validation.Valid;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.EntityModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,63 +26,62 @@ import java.util.List;
 public class TaskController {
 
     private final TaskService taskService;
+    private final TaskModelAssembler assembler;
 
-    public TaskController(TaskService taskService) {
+    public TaskController(TaskService taskService, TaskModelAssembler assembler) {
         this.taskService = taskService;
+        this.assembler = assembler;
     }
 
     @GetMapping()
-    public ResponseEntity<?> getAllTasks(){
+    public ResponseEntity<CollectionModel<EntityModel<TaskResponse>>> getAllTasks(){
         List<TaskResponse> tasks = this.taskService.getAllTasks();
-        return tasks.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok().body(tasks);
+        if(tasks.isEmpty()){
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok().body(assembler.toCollectionModel(tasks));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getTaskById(@PathVariable String id){
+    public EntityModel<TaskResponse> getTaskById(@PathVariable String id){
         TaskResponse task = this.taskService.getTask(id);
-        return ResponseEntity
-                .ok()
-                .body(task);
+        return assembler.toModel(task);
     }
 
     @PostMapping()
-    public ResponseEntity<?> createTask(@RequestBody @Valid TaskRequest dto){
+    public ResponseEntity<EntityModel<TaskResponse>> createTask(@RequestBody @Valid TaskRequest dto){
         TaskResponse newTask = taskService.createTask(dto);
         return ResponseEntity
                 .created(URI.create("/tasks/"+newTask.id()))
-                .body(newTask);
+                .body(assembler.toModel(newTask));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateTask(@PathVariable String id, @RequestBody TaskRequest dto){
+    public ResponseEntity<EntityModel<TaskResponse>> updateTask(@PathVariable String id, @RequestBody TaskRequest dto){
         TaskResponse updatedTask = this.taskService.updateTask(id, dto);
         return ResponseEntity
                 .created(URI.create("/tasks/"+updatedTask.id()))
-                .body(updatedTask);
+                .body(assembler.toModel(updatedTask));
     }
 
     @PatchMapping("/{id}/start")
-    public ResponseEntity<?> startTask(@PathVariable String id){
+    public void startTask(@PathVariable String id){
         this.taskService.startTask(id);
-        return ResponseEntity.ok().build();
     }
 
     @PatchMapping("/{id}/done")
-    public ResponseEntity<?> doneTask(@PathVariable String id){
+    public void doneTask(@PathVariable String id){
         this.taskService.doneTask(id);
-        return ResponseEntity.ok().build();
     }
 
     @PatchMapping("/{id}/reset")
-    public ResponseEntity<?> resetTask(@PathVariable String id){
+    public void resetTask(@PathVariable String id){
         this.taskService.resetTask(id);
-        return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteTask(@PathVariable String id){
+    public void deleteTask(@PathVariable String id){
         this.taskService.deleteTask(id);
-        return ResponseEntity.ok().build();
     }
 
 }
