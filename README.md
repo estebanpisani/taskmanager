@@ -8,7 +8,7 @@ Desarrollar una API REST para gestionar tareas personales, aplicando buenas prá
     * Obtener todas las tareas
     * Obtener tarea por ID
     * Editar tarea
-    * Cambiar de estados ("TO DO" -> "In Progress" -> "Done")
+    * Cambiar de estados ("To do" -> "In Progress" -> "Done")
     * Eliminar tarea
 - Manejo de Excepciones Personalizadas
 - Persistencia en Base de Datos en memoria (H2)
@@ -48,7 +48,7 @@ Desarrollar una API REST para gestionar tareas personales, aplicando buenas prá
 - [x] CRUD completo de tareas
 - [x] Validaciones (form input)
 - [x] Manejo global de excepciones personalizadas
-- [ ] HATEOAS
+- [x] HATEOAS
 - [ ] Scheduling
 - [ ] Testing
 - [ ] Implementación SonarLint
