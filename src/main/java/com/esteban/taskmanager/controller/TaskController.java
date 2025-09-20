@@ -54,7 +54,7 @@ public class TaskController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<EntityModel<TaskResponse>> updateTask(@PathVariable String id, @RequestBody TaskRequest dto){
+    public ResponseEntity<EntityModel<TaskResponse>> updateTask(@PathVariable String id, @RequestBody @Valid TaskRequest dto){
         TaskResponse updatedTask = this.taskService.updateTask(id, dto);
         return ResponseEntity
                 .created(URI.create("/tasks/"+updatedTask.id()))
