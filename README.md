@@ -49,7 +49,7 @@ Desarrollar una API REST para gestionar tareas personales, aplicando buenas prá
 - [x] Manejo global de excepciones personalizadas
 - [x] HATEOAS
 - [ ] Scheduling
-- [ ] Testing
+- [x] Testing
 - [ ] Implementación SonarLint
 - [ ] Dockerizar proyecto
 
