@@ -39,7 +39,7 @@ Desarrollar una API REST para gestionar tareas personales, aplicando buenas prá
     + [x] Uso de `record` para DTO
     + [ ] Uso de `var` para variables locales de tipo evidente
     + [ ] Uso de `switch` pmejorado para enums o flujos
-    + [ ] Uso de Text Blocks (""") para logs, errores y templates.
+    + [x] Uso de Text Blocks (""") para logs, errores y templates.
     + [ ] Uso de Pattern Matching
     + [ ] Sealed Classes para jerarquizar errores.
 - [x] Persistencia (H2)
@@ -50,7 +50,7 @@ Desarrollar una API REST para gestionar tareas personales, aplicando buenas prá
 - [x] Manejo global de excepciones personalizadas
 - [x] HATEOAS
 - [ ] Scheduling
-- [ ] Testing
+- [x] Testing
 - [ ] Implementación SonarLint
 - [ ] Dockerizar proyecto
 
