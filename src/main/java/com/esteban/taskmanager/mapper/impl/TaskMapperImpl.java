@@ -1,6 +1,7 @@
 package com.esteban.taskmanager.mapper.impl;
 
 import com.esteban.taskmanager.domain.Task;
+import com.esteban.taskmanager.domain.enums.PriorityEnum;
 import com.esteban.taskmanager.domain.enums.StatusEnum;
 import com.esteban.taskmanager.dto.TaskRequest;
 import com.esteban.taskmanager.dto.TaskResponse;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static java.util.Objects.nonNull;
@@ -22,7 +24,7 @@ public class TaskMapperImpl implements TaskMapper {
                 taskDto.title(),
                 taskDto.description(),
                 taskDto.dueDate(),
-                taskDto.priority(),
+                Objects.nonNull(taskDto.priority()) ? taskDto.priority() : PriorityEnum.MEDIUM,
                 StatusEnum.TO_DO
         );
     }

@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: taskmanager-test
+
+# Swagger
+springdoc:
+  api-docs:
+    enabled: false
+  swagger-ui:
+    enabled: false
