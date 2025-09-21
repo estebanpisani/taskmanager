@@ -57,10 +57,8 @@ public class TaskServiceTest {
         when(repository.findAll()).thenReturn(taskList);
         when(mapper.toResponseDtoList(ArgumentMatchers.anyList())).thenReturn(expectedResponse);
 
-        // when
         List<TaskResponse> result = taskService.getAllTasks();
 
-        // then
         assertNotNull(result);
         assertEquals(1, result.size());
         assertResult(expectedResponse.get(0), result.get(0));
@@ -76,10 +74,8 @@ public class TaskServiceTest {
         when(repository.findById(any(UUID.class))).thenReturn(Optional.of(task));
         when(mapper.toResponseDto(any(Task.class))).thenReturn(expectedResponse);
 
-        // when
         TaskResponse result = taskService.getTask(task.getId().toString());
 
-        // then
         assertNotNull(result);
         assertResult(expectedResponse, result);
         verify(repository, times(1)).findById(any(UUID.class));
@@ -90,12 +86,10 @@ public class TaskServiceTest {
     void shouldThrowResourceNotFoundWhenGetTaskNotFound() {
         when(repository.findById(any(UUID.class))).thenReturn(Optional.empty());
 
-        // when
         assertThatThrownBy(() -> taskService.getTask(DEFAULT_UUID))
                 .isInstanceOf(ResourceNotFoundException.class)
                 .hasMessageContaining(String.format("No se encontró la tarea con id: %s", DEFAULT_UUID));
 
-        // then
         verify(repository, times(1)).findById(any(UUID.class));
         verify(repository, times(0)).save(any(Task.class));
     }
@@ -111,10 +105,8 @@ public class TaskServiceTest {
         when(mapper.toEntity(any(TaskRequest.class))).thenReturn(task);
         when(mapper.toResponseDto(any(Task.class))).thenReturn(expectedResponse);
 
-        // when
         TaskResponse result = taskService.createTask(request);
 
-        // then
         assertNotNull(result);
         assertResult(expectedResponse, result);
         verify(repository, times(1)).save(task);
@@ -131,10 +123,8 @@ public class TaskServiceTest {
         when(mapper.updateEntityFromDto(any(TaskRequest.class), any(Task.class))).thenReturn(task);
         when(mapper.toResponseDto(any(Task.class))).thenReturn(expectedResponse);
 
-        // when
         TaskResponse result = taskService.updateTask(task.getId().toString(), request);
 
-        // then
         assertNotNull(result);
         assertResult(expectedResponse, result);
         verify(repository, times(1)).save(task);
@@ -144,12 +134,11 @@ public class TaskServiceTest {
     @Test
     void shouldThrowResourceNotFoundWhenUpdatingTaskNotFound() {
         when(repository.findById(any(UUID.class))).thenReturn(Optional.empty());
-        // when
+
         assertThatThrownBy(() -> taskService.updateTask(DEFAULT_UUID, any(TaskRequest.class)))
                 .isInstanceOf(ResourceNotFoundException.class)
                 .hasMessageContaining(String.format("No se encontró la tarea con id: %s", DEFAULT_UUID));
 
-        // then
         verify(repository, times(1)).findById(any(UUID.class));
         verify(repository, times(0)).save(any(Task.class));
     }
@@ -160,10 +149,8 @@ public class TaskServiceTest {
         when(repository.findById(any(UUID.class))).thenReturn(Optional.of(task));
         when(repository.save(any(Task.class))).thenReturn(task);
 
-        // when
         taskService.startTask(DEFAULT_UUID);
 
-        // then
         verify(repository, times(1)).findById(any(UUID.class));
         verify(repository, times(1)).save(task);
     }
@@ -172,12 +159,11 @@ public class TaskServiceTest {
     void shouldNotStartInProgressTask() {
         Task task = createTaskEntity(TASK_TITLE + DEFAULT_UUID, DESCRIPTION, LocalDateTime.now().plusYears(1), PriorityEnum.HIGH, StatusEnum.IN_PROGRESS);
         when(repository.findById(any(UUID.class))).thenReturn(Optional.of(task));
-        // when
+
         assertThatThrownBy(() -> taskService.startTask(DEFAULT_UUID))
                 .isInstanceOf(InvalidStatusException.class)
                 .hasMessageContaining(ALREADY_IN_PROGRESS_TASK_MESSAGE);
 
-        // then
         verify(repository, times(1)).findById(any(UUID.class));
         verify(repository, times(0)).save(task);
     }
@@ -185,12 +171,11 @@ public class TaskServiceTest {
     @Test
     void shouldThrowResourceNotFoundWhenStartingTaskNotFound() {
         when(repository.findById(any(UUID.class))).thenReturn(Optional.empty());
-        // when
+
         assertThatThrownBy(() -> taskService.startTask(DEFAULT_UUID))
                 .isInstanceOf(ResourceNotFoundException.class)
                 .hasMessageContaining(String.format("No se encontró la tarea con id: %s", DEFAULT_UUID));
 
-        // then
         verify(repository, times(1)).findById(any(UUID.class));
         verify(repository, times(0)).save(any(Task.class));
     }
@@ -201,10 +186,8 @@ public class TaskServiceTest {
         when(repository.findById(any(UUID.class))).thenReturn(Optional.of(task));
         when(repository.save(any(Task.class))).thenReturn(task);
 
-        // when
         taskService.doneTask(task.getId().toString());
 
-        // then
         verify(repository, times(1)).findById(any(UUID.class));
         verify(repository, times(1)).save(task);
     }
@@ -213,12 +196,11 @@ public class TaskServiceTest {
     void shouldNotStopDoneTask() {
         Task task = createTaskEntity(TASK_TITLE + DEFAULT_UUID, DESCRIPTION, LocalDateTime.now().plusYears(1), PriorityEnum.HIGH, StatusEnum.DONE);
         when(repository.findById(any(UUID.class))).thenReturn(Optional.of(task));
-        // when
+
         assertThatThrownBy(() -> taskService.doneTask(DEFAULT_UUID))
                 .isInstanceOf(InvalidStatusException.class)
                 .hasMessageContaining(ALREADY_DONE_TASK_MESSAGE);
 
-        // then
         verify(repository, times(1)).findById(any(UUID.class));
         verify(repository, times(0)).save(task);
     }
@@ -226,12 +208,11 @@ public class TaskServiceTest {
     @Test
     void shouldThrowResourceNotFoundWhenEndingTaskNotFound() {
         when(repository.findById(any(UUID.class))).thenReturn(Optional.empty());
-        // when
+
         assertThatThrownBy(() -> taskService.doneTask(DEFAULT_UUID))
                 .isInstanceOf(ResourceNotFoundException.class)
                 .hasMessageContaining(String.format("No se encontró la tarea con id: %s", DEFAULT_UUID));
 
-        // then
         verify(repository, times(1)).findById(any(UUID.class));
         verify(repository, times(0)).save(any(Task.class));
     }
@@ -242,10 +223,8 @@ public class TaskServiceTest {
         when(repository.findById(any(UUID.class))).thenReturn(Optional.of(task));
         when(repository.save(any(Task.class))).thenReturn(task);
 
-        // when
         taskService.resetTask(task.getId().toString());
 
-        // then
         verify(repository, times(1)).findById(any(UUID.class));
         verify(repository, times(1)).save(task);
     }
@@ -254,12 +233,11 @@ public class TaskServiceTest {
     void shouldNotResetPendingTask() {
         Task task = createTaskEntity(TASK_TITLE + DEFAULT_UUID, DESCRIPTION, LocalDateTime.now().plusYears(1), PriorityEnum.HIGH, StatusEnum.TO_DO);
         when(repository.findById(any(UUID.class))).thenReturn(Optional.of(task));
-        // when
+
         assertThatThrownBy(() -> taskService.resetTask(DEFAULT_UUID))
                 .isInstanceOf(InvalidStatusException.class)
                 .hasMessageContaining(ALREADY_PENDING_TASK_MESSAGE);
 
-        // then
         verify(repository, times(1)).findById(any(UUID.class));
         verify(repository, times(0)).save(task);
     }
@@ -267,21 +245,19 @@ public class TaskServiceTest {
     @Test
     void shouldThrowResourceNotFoundWhenToResetTaskNotFound() {
         when(repository.findById(any(UUID.class))).thenReturn(Optional.empty());
-        // when
+
         assertThatThrownBy(() -> taskService.resetTask(DEFAULT_UUID))
                 .isInstanceOf(ResourceNotFoundException.class)
                 .hasMessageContaining(String.format("No se encontró la tarea con id: %s", DEFAULT_UUID));
 
-        // then
         verify(repository, times(1)).findById(any(UUID.class));
         verify(repository, times(0)).save(any(Task.class));
     }
 
     @Test
     void shouldDeleteTaskSuccessfully() {
-        // when
         taskService.deleteTask(DEFAULT_UUID);
-        // then
+
         verify(repository, times(1)).deleteById(any(UUID.class));
     }
 

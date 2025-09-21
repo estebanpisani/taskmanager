@@ -38,7 +38,6 @@ public class TaskIntegrationTest {
         taskRepository.deleteAll();
     }
 
-    //GET ALL
     @Test
     void shouldGetAllTasks() throws Exception {
         Task task1 = new Task("T1", "Desc1", LocalDateTime.now().plusDays(1),
@@ -63,7 +62,6 @@ public class TaskIntegrationTest {
                 .andExpect(status().isNoContent());
     }
 
-    //GET BY ID
     @Test
     void shouldGetTaskById() throws Exception {
         Task task1 = new Task("T1", "Desc1", LocalDateTime.now().plusDays(1),
@@ -90,7 +88,6 @@ public class TaskIntegrationTest {
                 .andExpect(jsonPath("$.errorCode").value("TASK_NOT_FOUND"));
     }
 
-    //CREATE
     @Test
     void shouldCreateAndRetrieveTask() throws Exception {
         String json = """
@@ -138,7 +135,6 @@ public class TaskIntegrationTest {
 
     }
 
-    //CREATE
     @Test
     void shouldNotCreateTaskWithInvalidDate() throws Exception {
         String json = """
@@ -184,7 +180,6 @@ public class TaskIntegrationTest {
 
     }
 
-    // UPDATE BY ID
     @Test
     void shouldUpdateTask() throws Exception {
         String json = """

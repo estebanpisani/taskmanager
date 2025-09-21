@@ -48,7 +48,6 @@ public class TaskControllerTest {
     @MockitoBean
     private TaskModelAssembler assembler;
 
-    //Test GET By ID
     @Test
     void shouldReturnTaskOnGetById() throws Exception {
         TaskResponse response = createTaskResponse("1", TASK_TITLE + "1", DESCRIPTION, LocalDateTime.now().plusYears(1), PriorityEnum.HIGH, StatusEnum.TO_DO);
