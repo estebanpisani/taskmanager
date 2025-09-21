@@ -36,10 +36,7 @@ public class TaskController {
     @GetMapping()
     public ResponseEntity<CollectionModel<EntityModel<TaskResponse>>> getAllTasks(){
         List<TaskResponse> tasks = this.taskService.getAllTasks();
-        if(tasks.isEmpty()){
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.ok().body(assembler.toCollectionModel(tasks));
+        return tasks.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok().body(assembler.toCollectionModel(tasks));
     }
 
     @GetMapping("/{id}")
@@ -57,7 +54,7 @@ public class TaskController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<EntityModel<TaskResponse>> updateTask(@PathVariable String id, @RequestBody TaskRequest dto){
+    public ResponseEntity<EntityModel<TaskResponse>> updateTask(@PathVariable String id, @RequestBody @Valid TaskRequest dto){
         TaskResponse updatedTask = this.taskService.updateTask(id, dto);
         return ResponseEntity
                 .created(URI.create("/tasks/"+updatedTask.id()))
