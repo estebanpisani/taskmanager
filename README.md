@@ -35,13 +35,12 @@ Desarrollar una API REST para gestionar tareas personales, aplicando buenas prá
 
 #### Checklist desarrollo actual
 
-- [ ] Novedades de Java 17
+- [x] Novedades de Java 17
     + [x] Uso de `record` para DTO
     + [x] Uso de `switch` mejorado para enums o flujos
     + [x] Uso de Text Blocks (""") para logs, errores y templates.
-    + [ ] Uso de Pattern Matching
     + [x] Sealed Classes para jerarquizar errores.
-- [x] Persistencia (H2)
+- [x] Persistencia
     + [ ] Queries personalizadas (orden/filtro)
     + [ ] Migrar a BD Relacional
 - [x] CRUD completo de tareas
@@ -50,7 +49,6 @@ Desarrollar una API REST para gestionar tareas personales, aplicando buenas prá
 - [x] HATEOAS
 - [ ] Scheduling
 - [x] Testing
-- [ ] Implementación SonarLint
 - [ ] Dockerizar proyecto
 
 
