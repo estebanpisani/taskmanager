@@ -37,11 +37,10 @@ Desarrollar una API REST para gestionar tareas personales, aplicando buenas prá
 
 - [ ] Novedades de Java 17
     + [x] Uso de `record` para DTO
-    + [ ] Uso de `var` para variables locales de tipo evidente
-    + [ ] Uso de `switch` pmejorado para enums o flujos
-    + [ ] Uso de Text Blocks (""") para logs, errores y templates.
+    + [x] Uso de `switch` mejorado para enums o flujos
+    + [x] Uso de Text Blocks (""") para logs, errores y templates.
     + [ ] Uso de Pattern Matching
-    + [ ] Sealed Classes para jerarquizar errores.
+    + [x] Sealed Classes para jerarquizar errores.
 - [x] Persistencia (H2)
     + [ ] Queries personalizadas (orden/filtro)
     + [ ] Migrar a BD Relacional

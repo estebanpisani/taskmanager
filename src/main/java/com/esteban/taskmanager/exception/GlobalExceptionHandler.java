@@ -18,21 +18,40 @@ import static com.esteban.taskmanager.domain.enums.ErrorCodeEnum.TASK_NOT_FOUND;
 @RestControllerAdvice
 public class GlobalExceptionHandler{
 
-    @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<ErrorResponse> handleNotFound(ResourceNotFoundException ex){
+    @ExceptionHandler(TaskException.class)
+    public ResponseEntity<ErrorResponse> handleTaskException(TaskException ex) {
 
-        ErrorResponse error = new ErrorResponse(
-                HttpStatus.NOT_FOUND,
-                ex.getMessage(),
-                null,
-                TASK_NOT_FOUND
-        );
+        ErrorResponse error;
 
-        return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+        if (ex instanceof ResourceNotFoundException) {
+            error = new ErrorResponse(
+                    HttpStatus.NOT_FOUND,
+                    ex.getMessage(),
+                    null,
+                    TASK_NOT_FOUND
+            );
+        } else if (ex instanceof InvalidStatusException) {
+            error = new ErrorResponse(
+                    HttpStatus.BAD_REQUEST,
+                    ex.getMessage(),
+                    null,
+                    INVALID_STATUS
+            );
+        } else {
+            error = new ErrorResponse(
+                    HttpStatus.INTERNAL_SERVER_ERROR,
+                    ex.getMessage(),
+                    null,
+                    SERVER_ERROR
+            );
+        }
+
+        return new ResponseEntity<>(error, error.status());
     }
 
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ErrorResponse> handleValidationErrors(MethodArgumentNotValidException ex){
+    public ResponseEntity<ErrorResponse> handleValidationErrors(MethodArgumentNotValidException ex) {
 
         List<FieldErrorResponse> fieldErrors = ex.getBindingResult().getFieldErrors().stream()
                 .map(fieldError -> new FieldErrorResponse(fieldError.getField(), fieldError.getDefaultMessage()))
@@ -60,19 +79,5 @@ public class GlobalExceptionHandler{
 
         return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
     }
-
-    @ExceptionHandler(InvalidStatusException.class)
-    public ResponseEntity<ErrorResponse> handleInvalidStatusError(InvalidStatusException ex){
-
-        ErrorResponse error = new ErrorResponse(
-                HttpStatus.BAD_REQUEST,
-                ex.getMessage(),
-                null,
-                INVALID_STATUS
-        );
-
-        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
-    }
-
 
 }

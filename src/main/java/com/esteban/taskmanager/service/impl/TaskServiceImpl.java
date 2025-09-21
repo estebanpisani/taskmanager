@@ -52,7 +52,7 @@ public class TaskServiceImpl implements TaskService {
     public void startTask(String id) {
         Task task = this.repository.findById(UUID.fromString(id)).orElseThrow(() -> new ResourceNotFoundException(id));
         if(task.getStatus().equals(StatusEnum.IN_PROGRESS)){
-            throw new InvalidStatusException("en progreso.");
+            throw new InvalidStatusException(StatusEnum.IN_PROGRESS);
         }
         task.setStatus(StatusEnum.IN_PROGRESS);
         this.repository.save(task);
@@ -62,7 +62,7 @@ public class TaskServiceImpl implements TaskService {
     public void doneTask(String id) {
         Task task = this.repository.findById(UUID.fromString(id)).orElseThrow(() -> new ResourceNotFoundException(id));
         if(task.getStatus().equals(StatusEnum.DONE)){
-            throw new InvalidStatusException("terminada.");
+            throw new InvalidStatusException(StatusEnum.DONE);
         }
         task.setStatus(StatusEnum.DONE);
         this.repository.save(task);
@@ -72,7 +72,7 @@ public class TaskServiceImpl implements TaskService {
     public void resetTask(String id) {
         Task task = this.repository.findById(UUID.fromString(id)).orElseThrow(() -> new ResourceNotFoundException(id));
         if(task.getStatus().equals(StatusEnum.TO_DO)){
-            throw new InvalidStatusException("pendiente.");
+            throw new InvalidStatusException(StatusEnum.TO_DO);
         }
         task.setStatus(StatusEnum.TO_DO);
         this.repository.save(task);
